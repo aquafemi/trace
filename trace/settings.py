@@ -100,7 +100,7 @@ WSGI_APPLICATION = 'trace.wsgi.application'
 #         'PORT': '5432',
 #     }
 # }
-
+DATABASES = {}
 DATABASES['default'] =  dj_database_url.config()
 
 # Password validation
