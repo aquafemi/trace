@@ -80,7 +80,7 @@ class AudioUpload(View):
                 trace.save()
 
             # don't return anything back to the transloadit server,
-            return HttpResponse('')
+            return HttpResponse(status_code=200)
         else:
             # not a transloadit post, this is a post from a user uploading an audio file
             form = AudioFileForm(request.POST, request.FILES)

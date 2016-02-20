@@ -91,10 +91,12 @@ WSGI_APPLICATION = 'trace.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'trace',
-        'USER': 'root',
-        'PASSWORD': 'foo',
+        'USER': 'femi',
+        'PASSWORD': 'pass',
+        'HOST': '',
+        'PORT': '5432',
     }
 }
 
