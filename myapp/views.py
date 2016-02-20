@@ -2,10 +2,15 @@ from django.http import (HttpResponseBadRequest, HttpResponseRedirect,
                          HttpResponse)
 from django.shortcuts import redirect, render, render_to_response
 from django.views.generic.base import View
-from myapp import models
-from myapp import forms
+from myapp.models import *
+from myapp.forms import *
+from trace import settings as SETTINGS
 from transloadit.client import Client
 from mutagen.mp3 import MP3
+from requests import get
+import os.path
+import time
+import urllib
 
 AUTH_KEY = '90e7d490d78611e5893f9b7c82ab5693'
 AUTH_SECRET = 'a9918408b27cc8eae418ee0d25019b429a13f3d0'
@@ -21,26 +26,25 @@ class HomePage(View):
 class AudioUpload(View):
 
     def get(self, request):
-        # ask person to upload a audio file
-        # possibly put a label on it
-        return render(request, '/audio_upload.html')
+        form = AudioFileForm()
+        return render(request, 'audio_upload.html', {'form': form})
 
     def post(self, request):
-        # here is where someone uploads the audio file
-        # get the audio file and store it in the back end
-        # sent the audio file to transloadit. Get the image and associate it with the file
         # put the image in the queue or have it replace the old one
 
         form = AudioFileForm(request.POST, request.FILES)
         if not form.is_valid():
             form = AudioFileForm()
-            return render('/audio_upload.html', {'form': form})
+            return render(request, 'audio_upload.html', {'form': form})
 
-        # get length in seconds
-        audio = MP3(request.POST['audio_file'].name)
-        length = audio.info.length
+        audio_file = request.FILES['audio_file']
+        sound = AudioFile(audio_file=audio_file)
+        sound.save()
 
         client = Client(AUTH_KEY, AUTH_SECRET)
+        media_location = SETTINGS.MEDIA_ROOT
+        files = {'file': open(media_location + '/' +
+                              sound.audio_file.name, 'rb')}
         params = {
             'steps': {
                 'wav': {
@@ -49,9 +53,24 @@ class AudioUpload(View):
                     'preset': "wav",
                     'ffmpeg_stack': "v2.2.3"
                 },
+            },
+            'notify_url': ''
+        }
+        result = client.request(files=files, **params)
+        new_audio_link = result['results']['wav'][0]['url']
+        with open('temp', 'wb') as temp_file:
+            response = get(new_audio_link)
+            temp_file.write(response.content)
+
+
+        length = result['results']['wav'][0]['meta']['duration']
+        print(length)
+        files = {'file': open('temp', 'rb')}
+        params = {
+            'steps': {
                 'waveform': {
                     'robot': "/audio/waveform",
-                    'use': "wav",
+                    'use': ":original",
                     'format': 'image',
                     'result': True,
                     'width': 300,
@@ -62,17 +81,18 @@ class AudioUpload(View):
                 },
             },
         }
+        result = client.request(files=files, **params)
+        img_link = result['results']['waveform'][0]['url']
+        with open('temp', 'wb') as temp_file:
+            response = get(img_link)
+            temp_file.write(response.content)
 
-        result = client.request(**params)
-        trace = Trace(image=open(result))
+        trace = Trace(image=open(temp_file))
         trace.save()
 
-        sound = SoundUpload(audio_file=request.POST['audio_file'],
-                           length=length,
-                           trace=trace)
-        sound.save()
         # return them home
-        return HttpResponseRedirect('/status.html')
+        print("here2")
+        return HttpResponseRedirect('status.html')
 
 class TracePlayback(View):
 

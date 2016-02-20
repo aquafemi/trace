@@ -1,4 +1,4 @@
-# clash
+# trace
 Physical music generation and playback
 
 * Write music onto a surface
@@ -9,7 +9,7 @@ Physical music generation and playback
   * Continuous mode -> there should be an indicator on the screen (that moves from left to right) indicating at what point in time the current music is playing.
 * Can upload music or leave it as is
 * Can also play music that wil generate one of the format (call it a "Trace") -> Connect it to a raspberry pi
-* Can play multiple traces at the same time as long as they are demarcated ("Clash") -> a straight enough line can become a demarcation
+* Can play multiple traces at the same time as long as they are demarcated ("trace") -> a straight enough line can become a demarcation
 * Can either playback music from phone or send data to server
 * Could also upload traces to youtube?
 
@@ -53,14 +53,14 @@ Physical music generation and playback
 
 # Sound => Image
 1. Get out your phone
-2. Go to clash.xyz
+2. Go to trace.xyz
 3. It will ask you if you want to create a trace or play a trace, or possibly both.
 4. If you choose to create a trace, it will ask you ~~either 1. plug aux cable from phone to raspberry pi which will control arduino to make the trace in real time as your music plays to it (this will require some usage of the sound recorder and signal analysis). 2.~~ to choose a audio file to upload from your phone, send it to the server and the server will queue the new trace. The raspberry pi will act as a client to the server and will have some mechanism for polling the queue to tell the arduino what to do. There isn't much space to make the trace so the servos have to be very precise
 * Can change bitrate and sampling rate if too difficult to draw with hardware
 
 # Image => Sound
 1. Get out your phone
-2. Go to clash.xyz
+2. Go to trace.xyz
 3. It will ask you if you want to create a trace or play a trace, or possibly both.
 4. If you choose to play a trace, the website will either [(needs permission)](http://www.html5rocks.com/en/tutorials/getusermedia/intro/#toc-gettingstarted)1. ask you to take a picture of the trace 2. hold the camera steady over a trace until it recognizes it 3. move the camera very close to the trace and drag it over as it plays it back to you [tload](https://transloadit.com/example_apps/video-thumbnail-chooser/index.php)
 5. In addition to this there is a line/cursor that goes over the trace and plays it back to you (once it's "read" the trace and you press the play/start button)
