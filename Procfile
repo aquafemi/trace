@@ -1,1 +1,1 @@
-worker: python worker.py
+web: gunicorn trace.wsgi --log-file -
