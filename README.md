@@ -61,5 +61,5 @@ Physical music generation and playback
 1. Get out your phone
 2. Go to clash.xyz
 3. It will ask you if you want to create a trace or play a trace, or possibly both.
-4. If you choose to play a trace, the website will either 1. ask you to take a picture of the trace 2. hold the camera steady over a trace until it recognizes it 3. move the camera very close to the trace and drag it over as it plays it back to you
+4. If you choose to play a trace, the website will either 1. ask you to take a picture of the trace 2. hold the camera steady over a trace until it recognizes it 3. move the camera very close to the trace and drag it over as it plays it back to you [tload](https://transloadit.com/example_apps/video-thumbnail-chooser/index.php)
 5. In addition to this there is a line/cursor that goes over the trace and plays it back to you (once it's "read" the trace and you press the play/start button)
