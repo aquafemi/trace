@@ -15,7 +15,7 @@ Physical music generation and playback
 
 # Milestone 1
 * Play around with the image processing. Try printing out images of sound waves and see if the image processing image can capture it store it somewhere
-* With my phone, go to the website. It will ask to take a picture of a waveform (idea 1)[https://hackerluddite.wordpress.com/2012/04/15/getting-access-to-a-phones-camera-from-a-web-page/] (idea 2)[http://www.codepool.biz/take-a-photo-and-upload-it-on-mobile-phones-with-html5.html]. Once this is done it posts the image and the server stores the image in a way that will make it convenient to do some image processing.
+* With my phone, go to the website. It will ask to take a picture of a waveform [idea 1](https://hackerluddite.wordpress.com/2012/04/15/getting-access-to-a-phones-camera-from-a-web-page/) [idea 2](http://www.codepool.biz/take-a-photo-and-upload-it-on-mobile-phones-with-html5.html) [google search](https://www.google.com/search?client=ubuntu&channel=fs&q=django+web+app+use+camera&ie=utf-8&oe=utf-8#channel=fs&q=django+web+app+use+phone+camera). Once this is done it posts the image and the server stores the image in a way that will make it convenient to do some image processing.
 
 # Milestone 2
 * Play around with the sound processing. Try playing music and see if the sound recorder can pick up on it and print out the signal
