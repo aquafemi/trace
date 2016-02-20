@@ -11,6 +11,7 @@ Physical music generation and playback
 * Can also play music that wil generate one of the format (call it a "Trace") -> Connect it to a raspberry pi
 * Can play multiple traces at the same time as long as they are demarcated ("Clash") -> a straight enough line can become a demarcation
 * Can either playback music from phone or send data to server
+* Could also upload traces to youtube?
 
 # Milestone 0
 * Have the website running
