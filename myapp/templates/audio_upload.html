@@ -1,0 +1,15 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Audio Upload</title>
+</head>
+<body>
+<form action="{% url 'audio-upload' %}" enctype="multipart/form-data" method="POST">
+  {% csrf_token %}
+  {{ form }}
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="//assets.transloadit.com/js/jquery.transloadit2-v2-latest.js"></script>
+
+</body>
+</html>

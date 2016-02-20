@@ -15,8 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from myapp import views
+
 admin.autodiscover()
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^$', views.HomePage.as_view()),
+    url(r'^audio-upload/', views.AudioUpload.as_view()),
+    url(r'^trace-playback/', views.TracePlayback.as_view()),
+    url(r'^status/', views.Status.as_view())
 ]
