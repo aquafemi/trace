@@ -1,0 +1,3 @@
+body {margin:0;padding:0;height:100%;}
+div.topdiv {clear:both;position:fixed;top:0;height:50%;width:100%;background-color:#990000;color:#FFFFFF;font-size:16px;text-align:center;}
+div.bottomdiv {clear:both;position:fixed;bottom:0;height:50%;width:100%;background-color:#009900;color:#FFFFFF;font-size:16px;text-align:center;}
