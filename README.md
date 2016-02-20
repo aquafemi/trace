@@ -2,9 +2,8 @@
 Physical music generation and playback
 
 * Write music onto a surface
-  * Binary data
-  * Physical markings on a paper that can be zoomed into
-  * First test to see if music can actually read by one of these methods
+  * Physical markings on a paper that can be zoomed into: [transloadit api](https://transloadit.com/demos/audio-encoding/generate-a-waveform-image-from-an-audio-file)
+  * First test to see if music can actually read this way
 * Read music using a camera that does automatic playback of what it's seeing
   * Ad hoc mode
   * Continuous mode -> there should be an indicator on the screen (that moves from left to right) indicating at what point in time the current music is playing.
@@ -45,10 +44,10 @@ Physical music generation and playback
 * Possibly use a Raspberry Pi. Connect the output of the playing device (with aux cable) to the raspberry pi. Pass it to the sound recorder which outputs some analog/digital data that controls the motor/servo.
 * Need: Arduino, raspberry pi, aux cable
 
-# Items needed:
-* Aux cable
-* Arduino Uno with cable
-* Raspberry Pi
-* Micro usb cable
-* Paper
-* Samsung Phone
+# Image => Sound
+1. Get out your phone
+2. Go to clash.xyz
+3. It will ask you if you want to create a trace or play a trace, or possibly both.
+4. If you choose to create a trace, it will ask you ~~either 1. plug aux cable from phone to raspberry pi which will control arduino to make the trace in real time as your music plays to it (this will require some usage of the sound recorder and signal analysis). 2.~~ to choose a audio file to upload from your phone, send it to the server and the server will queue the new trace. The raspberry pi will act as a client to the server and will have some mechanism for polling the queue to tell the arduino what to do. There isn't much space to make the trace so the servos have to be very precise
+5. If you choose to play a trace, the website will either 1. ask you to take a picture of the trace 2. hold the camera steady over a trace until it recognizes it 3. move the camera very close to the trace and drag it over as it plays it back to you
+6. In addition to this there is a line/cursor that goes over the trace and plays it back to you (once it's "read" the trace and you press the play/start button)
