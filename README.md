@@ -12,6 +12,12 @@ Physical music generation and playback
 * Can play multiple traces at the same time as long as they are demarcated ("Clash") -> a straight enough line can become a demarcation
 * Can either playback music from phone or send data to server
 
+# Milestone 0
+* Have the website running
+* Be able to go to the website and upload a sound file, maybe even name it?
+* Have the server take this sound file and upload to transloadit
+* Have it save this file somewhere where it can be retrieved later by another client
+
 # Milestone 1
 * Play around with the image processing. Try printing out images of sound waves and see if the image processing image can capture it store it somewhere
 * With my phone, go to the website. It will ask to take a picture of a waveform [idea 1](https://hackerluddite.wordpress.com/2012/04/15/getting-access-to-a-phones-camera-from-a-web-page/) [idea 2](http://www.codepool.biz/take-a-photo-and-upload-it-on-mobile-phones-with-html5.html) [google search](https://www.google.com/search?client=ubuntu&channel=fs&q=django+web+app+use+camera&ie=utf-8&oe=utf-8#channel=fs&q=django+web+app+use+phone+camera). Once this is done it posts the image and the server stores the image in a way that will make it convenient to do some image processing.
