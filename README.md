@@ -56,6 +56,7 @@ Physical music generation and playback
 2. Go to clash.xyz
 3. It will ask you if you want to create a trace or play a trace, or possibly both.
 4. If you choose to create a trace, it will ask you ~~either 1. plug aux cable from phone to raspberry pi which will control arduino to make the trace in real time as your music plays to it (this will require some usage of the sound recorder and signal analysis). 2.~~ to choose a audio file to upload from your phone, send it to the server and the server will queue the new trace. The raspberry pi will act as a client to the server and will have some mechanism for polling the queue to tell the arduino what to do. There isn't much space to make the trace so the servos have to be very precise
+* Can change bitrate and sampling rate if too difficult to draw with hardware
 
 # Image => Sound
 1. Get out your phone
