@@ -8,7 +8,7 @@ from trace import settings as SETTINGS
 from transloadit.client import Client
 from mutagen.mp3 import MP3
 from requests import get
-import os.path
+import shutil
 import time
 import urllib
 
@@ -32,67 +32,86 @@ class AudioUpload(View):
     def post(self, request):
         # put the image in the queue or have it replace the old one
 
-        form = AudioFileForm(request.POST, request.FILES)
-        if not form.is_valid():
-            form = AudioFileForm()
-            return render(request, 'audio_upload.html', {'form': form})
+        transloadit_json = request.POST.get('transloadit', False)
+        if transloadit_json:
 
-        audio_file = request.FILES['audio_file']
-        sound = AudioFile(audio_file=audio_file)
-        sound.save()
+            # audio output
+            if transloadit_json.get('results').get('wav'):
+                # get the download link
+                new_audio_link = transloadit_json.get('results').get('wav')[0].get('url')
+                # download the wav file and write it to temp
+                with urllib.request.urlopen(new_audio_link) as response, open('temp', 'wb') as out_file:
+                    shutil.copyfileobj(response, out_file)
 
-        client = Client(AUTH_KEY, AUTH_SECRET)
-        media_location = SETTINGS.MEDIA_ROOT
-        files = {'file': open(media_location + '/' +
-                              sound.audio_file.name, 'rb')}
-        params = {
-            'steps': {
-                'wav': {
-                    'use': ":original",
-                    'robot': "/audio/encode",
-                    'preset': "wav",
-                    'ffmpeg_stack': "v2.2.3"
+                # get the length (in seconds) of the audio from the transloadit post
+                length = transloadit_json.get('results').get('wav')[0].get('meta').get('duration')
+
+                client = Client(AUTH_KEY, AUTH_SECRET)
+
+                # construct our files to pipe this output to the waveform robot. Open the audio file, temp
+                files = {'file': open('temp', 'rb')}
+                params = {
+                    'steps': {
+                        'waveform': {
+                            'robot': "/audio/waveform",
+                            'use': ":original",
+                            'format': 'image',
+                            'result': True,
+                            'width': 300,
+                            'height': 200,
+                            'background_color': "ffffffff",
+                            'outer_color': "ff0000aa",
+                            'center_color': "660000aa"
+                        },
+                    },
+                    'notify_url': 'http://traced.herokuapp.com/audio-upload/'
+                }
+                # now we request for the waveform
+                client.request(files=files, **params)
+
+            # waveform output
+            else:
+                # get the image link from the transloadit post
+                img_link = transloadit_json.get('results').get('waveform')[0].get('url')
+                with urllib.request.urlopen(img_link) as response, open('temp', 'wb') as out_file:
+                    shutil.copyfileobj(response, out_file)
+
+                trace = Trace(image=out_file)
+                trace.save()
+
+            # don't return anything back to the transloadit server,
+            return HttpResponse('')
+        else:
+            # not a transloadit post, this is a post from a user uploading an audio file
+            form = AudioFileForm(request.POST, request.FILES)
+            if not form.is_valid():
+                form = AudioFileForm()
+                return render(request, 'audio_upload.html', {'form': form})
+
+            audio_file = request.FILES['audio_file']
+            sound = AudioFile(audio_file=audio_file)
+            sound.save()
+
+            client = Client(AUTH_KEY, AUTH_SECRET)
+            media_location = SETTINGS.MEDIA_ROOT
+            files = {'file': open(media_location + '/' +
+                                  sound.audio_file.name, 'rb')}
+            params = {
+                'steps': {
+                    'wav': {
+                        'use': ":original",
+                        'robot': "/audio/encode",
+                        'preset': "wav",
+                        'ffmpeg_stack': "v2.2.3"
+                    },
                 },
-            },
-            'notify_url': ''
-        }
-        result = client.request(files=files, **params)
-        new_audio_link = result['results']['wav'][0]['url']
-        with open('temp', 'wb') as temp_file:
-            response = get(new_audio_link)
-            temp_file.write(response.content)
+                'notify_url': 'http://traced.herokuapp.com/audio-upload/'
+            }
+            client.request(files=files, **params)
 
-
-        length = result['results']['wav'][0]['meta']['duration']
-        print(length)
-        files = {'file': open('temp', 'rb')}
-        params = {
-            'steps': {
-                'waveform': {
-                    'robot': "/audio/waveform",
-                    'use': ":original",
-                    'format': 'image',
-                    'result': True,
-                    'width': 300,
-                    'height': 200,
-                    'background_color': "ffffffff",
-                    'outer_color': "ff0000aa",
-                    'center_color': "660000aa"
-                },
-            },
-        }
-        result = client.request(files=files, **params)
-        img_link = result['results']['waveform'][0]['url']
-        with open('temp', 'wb') as temp_file:
-            response = get(img_link)
-            temp_file.write(response.content)
-
-        trace = Trace(image=open(temp_file))
-        trace.save()
-
-        # return them home
-        print("here2")
-        return HttpResponseRedirect('status.html')
+            # return them home
+            print("here2")
+            return HttpResponseRedirect('status.html')
 
 class TracePlayback(View):
 
