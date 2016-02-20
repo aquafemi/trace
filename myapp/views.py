@@ -64,10 +64,13 @@ class AudioUpload(View):
         }
 
         result = client.request(**params)
-        form = SoundUpload(label=request.POST['label'],
-                           audio_file=request.POST['audio_file'],
-                           trace=open(result))
-        form.save()
+        trace = Trace(image=open(result))
+        trace.save()
+
+        sound = SoundUpload(audio_file=request.POST['audio_file'],
+                           length=length,
+                           trace=trace)
+        sound.save()
         # return them home
         return HttpResponseRedirect('/status.html')
 
