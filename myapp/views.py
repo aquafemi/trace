@@ -1,24 +1,31 @@
+from django.core.files.uploadedfile import TemporaryUploadedFile
 from django.core.files.images import get_image_dimensions
 from django.http import (HttpResponseBadRequest, HttpResponseRedirect,
                          HttpResponse)
 from django.shortcuts import redirect, render, render_to_response
-from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.views.generic.base import View
+from django.views.decorators.csrf import csrf_exempt
+
 from myapp.models import AudioFile, Trace
 from myapp.forms import AudioFileForm, TraceForm
 from trace import settings as SETTINGS
+
+from PIL import Image
 from transloadit.client import Client
 from requests import get
-from scipy.misc import imread
 
+import datetime
 import json
+import numpy
 import shutil
 import time
 import urllib2
 
 AUTH_KEY = '90e7d490d78611e5893f9b7c82ab5693'
 AUTH_SECRET = 'a9918408b27cc8eae418ee0d25019b429a13f3d0'
+audio_timer = 0
+waveform_timer = 0
 
 # Create your views here.
 
@@ -35,7 +42,8 @@ class AudioUpload(View):
 
     def get(self, request, *args, **kwargs):
         form = AudioFileForm()
-        return render(request, 'audio_upload.html', {'form': form, 'message':'Hi There.'})
+        message = 'Hello'
+        return render(request, 'audio_upload.html', {'form': form, 'message': message})
 
     def post(self, request, *args, **kwargs):
         # put the image in the queue or have it replace the old one
@@ -45,8 +53,11 @@ class AudioUpload(View):
             transloadit_dict = json.loads(transloadit_json)
 
             # audio output
-            if transloadit_dict.get('results').get('wav'):
-                print('audio')
+            now = datetime.datetime.now()
+            if transloadit_dict.get('results').get('wav') and (now - audio_timer >
+                        datetime.timedelta(seconds=10)):
+                audio_timer = now
+                print(transloadit_dict.get('results').get('wav'))
                 # get the download link
                 new_audio_link = transloadit_dict.get('results').get('wav')[0].get('url')
                 # download the wav file and write it to temp
@@ -81,8 +92,10 @@ class AudioUpload(View):
                 client.request(files=files, **params)
 
             # waveform output
-            else:
-                print('waveform')
+            elif transloadit_dict.get('results').get('waveform') and (now - waveform_timer >
+                    datetime.timedelta(seconds=10)):
+                print(transloadit_dict.get('results').get('waveform'))
+                waveform_timer = now
                 # get the image link from the transloadit post
                 img_link = transloadit_dict.get('results').get('waveform')[0].get('url')
                 response = urllib2.urlopen(img_link)
@@ -99,7 +112,7 @@ class AudioUpload(View):
             form = AudioFileForm(request.POST, request.FILES)
             if not form.is_valid():
                 form = AudioFileForm()
-                message = "Please try again"
+                message = "Please try again."
                 return render(request, 'audio_upload.html', {'form': form, 'message': message})
 
             audio_file = request.FILES['audio_file']
@@ -123,10 +136,10 @@ class AudioUpload(View):
             }
             client.request(files=files, **params)
 
-            # return them home
             print("here2")
-            message = "Your trace is on the way."
-            return HttpResponseRedirect('status.html')
+            # forward to status
+            message = "Your Trace Is On The Way."
+            return render(request, 'status.html', {'message': message})
 
 class TracePlayback(View):
 
@@ -149,13 +162,15 @@ class TracePlayback(View):
         width, height =  get_image_dimensions(image_file)
         trace = Trace(image=image_file, width=width, height=height)
         trace.save()
-
-        return HttpResponseRedirect('status.html')
+        message = 'Unraveling...'
+        return render(request, 'status.html', {'message': message})
 
 class Status(View):
 
     def get(self, request):
-        pass
+        message = 'request.body'
+        return render(request, 'status.html', {'message': message})
 
     def post(self, request):
-        pass
+        message = request.body
+        return render(request, 'status.html', {'message': message})

@@ -25,7 +25,7 @@ urlpatterns = [
     url(r'^$', views.HomePage.as_view()),
     url(r'^audio-upload/', views.AudioUpload.as_view()),
     url(r'^trace-playback/', views.TracePlayback.as_view()),
-    url(r'^status/', views.Status.as_view())
+    url(r'^status/', views.Status.as_view()),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
