@@ -11,7 +11,6 @@ from trace import settings as SETTINGS
 from transloadit.client import Client
 from requests import get
 from scipy.misc import imread
-from skimage.io import imread
 
 import json
 import shutil
