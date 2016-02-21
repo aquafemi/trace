@@ -8,8 +8,8 @@ from myapp.models import *
 from myapp.forms import *
 from trace import settings as SETTINGS
 from transloadit.client import Client
-from mutagen.mp3 import MP3
 from requests import get
+import json
 import shutil
 import time
 import urllib
@@ -39,18 +39,19 @@ class AudioUpload(View):
 
         transloadit_json = request.POST.get('transloadit', False)
         if transloadit_json:
+            transloadit_dict = json.loads(transloadit_json)
 
             # audio output
-            if transloadit_json.get('results').get('wav'):
+            if transloadit_dict.get('results').get('wav'):
                 print('audio')
                 # get the download link
-                new_audio_link = transloadit_json.get('results').get('wav')[0].get('url')
+                new_audio_link = transloadit_dict.get('results').get('wav')[0].get('url')
                 # download the wav file and write it to temp
                 with urllib.request.urlopen(new_audio_link) as response, open('temp', 'wb') as out_file:
                     shutil.copyfileobj(response, out_file)
 
                 # get the length (in seconds) of the audio from the transloadit post
-                length = transloadit_json.get('results').get('wav')[0].get('meta').get('duration')
+                length = transloadit_dict.get('results').get('wav')[0].get('meta').get('duration')
 
                 client = Client(AUTH_KEY, AUTH_SECRET)
 
@@ -79,7 +80,7 @@ class AudioUpload(View):
             else:
                 print('waveform')
                 # get the image link from the transloadit post
-                img_link = transloadit_json.get('results').get('waveform')[0].get('url')
+                img_link = transloadit_dict.get('results').get('waveform')[0].get('url')
                 with urllib.request.urlopen(img_link) as response, open('temp', 'wb') as out_file:
                     shutil.copyfileobj(response, out_file)
 
