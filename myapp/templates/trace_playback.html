@@ -3,9 +3,19 @@
   <meta charset="utf-8">
   <title>Trace Playback</title>
   {% load staticfiles %}
-  <link href="{% static 'css/trace_playback.css' %}" rel="stylesheet">
+  <link href="{% static 'css/base.css' %}" rel="stylesheet">
 </head>
-<body id="grad">
-
+<body>
+  <div style="height:100%">
+    <div class="topdiv box" id="grad">
+      <form enctype="multipart/form-data" method="POST">
+        <div>{{ form }}</div>
+        <div class="box"><input type="submit" class="button-0" value="Upload" label="Upload"></div>
+      </form>
+    </div>
+    <div class="bottomdiv box" id="grad">
+      {{ message }}
+    </div>
+  </div>
 </body>
 </html>

@@ -1,3 +1,4 @@
+
 from django.http import (HttpResponseBadRequest, HttpResponseRedirect,
                          HttpResponse)
 from django.shortcuts import redirect, render, render_to_response
@@ -9,6 +10,9 @@ from myapp.forms import *
 from trace import settings as SETTINGS
 from transloadit.client import Client
 from requests import get
+from scipy.misc import imread
+from skimage.io import imread
+
 import json
 import shutil
 import time
@@ -32,7 +36,7 @@ class AudioUpload(View):
 
     def get(self, request, *args, **kwargs):
         form = AudioFileForm()
-        return render(request, 'audio_upload.html', {'form': form})
+        return render(request, 'audio_upload.html', {'form': form, 'message':''})
 
     def post(self, request, *args, **kwargs):
         # put the image in the queue or have it replace the old one
@@ -96,7 +100,8 @@ class AudioUpload(View):
             form = AudioFileForm(request.POST, request.FILES)
             if not form.is_valid():
                 form = AudioFileForm()
-                return render(request, 'audio_upload.html', {'form': form})
+                message = "Please try again"
+                return render(request, 'audio_upload.html', {'form': form, 'message': message})
 
             audio_file = request.FILES['audio_file']
             sound = AudioFile(audio_file=audio_file)
@@ -121,17 +126,30 @@ class AudioUpload(View):
 
             # return them home
             print("here2")
+            message = "Your trace is on the way."
             return HttpResponseRedirect('status.html')
 
 class TracePlayback(View):
 
     def get(self, request):
-        # ask for camera
-        return render(request, 'trace_playback.html')
+        return render(request, 'trace_playback.html', {'form': form, 'message':''})
 
     def post(self, request):
-        # ask for camera input
-        return render(request, 'trace_playback.html')
+        form = TraceForm(request.POST, request.FILES)
+        if not form.is_valid():
+            form = TraceForm()
+            return render(request, 'trace_playback.html', {'form': form})
+
+        image_file = request.FILES['image']
+        trace = Trace(image=image_file,width=image_file.width,
+            height=image_file.height)
+        trace.save()
+
+
+
+
+
+        return HttpResponseRedirect('status.html')
 
 class Status(View):
 
