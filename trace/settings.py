@@ -90,6 +90,11 @@ WSGI_APPLICATION = 'trace.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
+DATABASES = {}
+DATABASES['default'] =  dj_database_url.config()
+DATABASES['default'].update({
+    'ENGINE': 'django.db.backends.postgresql_psycopg2'
+})
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -100,9 +105,6 @@ WSGI_APPLICATION = 'trace.wsgi.application'
 #         'PORT': '5432',
 #     }
 # }
-DATABASES = {}
-DATABASES['default'] =  dj_database_url.config()
-DATABASES['default'].update({'ENGINE': 'django.db.backends.postgresql_psycopg2'})
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
