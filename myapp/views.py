@@ -12,7 +12,7 @@ from requests import get
 import json
 import shutil
 import time
-import urllib.request
+import urllib2
 
 AUTH_KEY = '90e7d490d78611e5893f9b7c82ab5693'
 AUTH_SECRET = 'a9918408b27cc8eae418ee0d25019b429a13f3d0'
@@ -47,7 +47,7 @@ class AudioUpload(View):
                 # get the download link
                 new_audio_link = transloadit_dict.get('results').get('wav')[0].get('url')
                 # download the wav file and write it to temp
-                with urllib.request.urlopen(new_audio_link) as response, open('temp', 'wb') as out_file:
+                with urllib2.urlopen(new_audio_link) as response, open('temp', 'wb') as out_file:
                     shutil.copyfileobj(response, out_file)
 
                 # get the length (in seconds) of the audio from the transloadit post
@@ -81,7 +81,7 @@ class AudioUpload(View):
                 print('waveform')
                 # get the image link from the transloadit post
                 img_link = transloadit_dict.get('results').get('waveform')[0].get('url')
-                with urllib.request.urlopen(img_link) as response, open('temp', 'wb') as out_file:
+                with urllib2.urlopen(img_link) as response, open('temp', 'wb') as out_file:
                     shutil.copyfileobj(response, out_file)
 
                 trace = Trace(image=out_file)
