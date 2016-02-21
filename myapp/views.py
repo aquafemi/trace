@@ -47,7 +47,8 @@ class AudioUpload(View):
                 # get the download link
                 new_audio_link = transloadit_dict.get('results').get('wav')[0].get('url')
                 # download the wav file and write it to temp
-                with urllib2.urlopen(new_audio_link) as response, open('temp', 'wb') as out_file:
+                response =  urllib2.urlopen(new_audio_link)
+                with open('temp', 'wb') as out_file:
                     shutil.copyfileobj(response, out_file)
 
                 # get the length (in seconds) of the audio from the transloadit post
@@ -81,7 +82,8 @@ class AudioUpload(View):
                 print('waveform')
                 # get the image link from the transloadit post
                 img_link = transloadit_dict.get('results').get('waveform')[0].get('url')
-                with urllib2.urlopen(img_link) as response, open('temp', 'wb') as out_file:
+                response = urllib2.urlopen(img_link)
+                with open('temp', 'wb') as out_file:
                     shutil.copyfileobj(response, out_file)
 
                 trace = Trace(image=out_file)
