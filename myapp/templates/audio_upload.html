@@ -2,13 +2,15 @@
 <head>
   <meta charset="utf-8">
   <title>Audio Upload</title>
+  {% load staticfiles %}
+  <link href="{% static 'css/audio_upload.css' %}" rel="stylesheet">
 </head>
 <body>
-<form enctype="multipart/form-data" method="POST">
-  {% csrf_token %}
-  {{ form }}
-  <input type="submit" value="Upload">
-</form>
-
+  <div class="box">
+    <form enctype="multipart/form-data" method="POST">
+      <div>{{ form }}</div>
+      <div class="box"><input type="submit" class="button-0" value="Upload" label="Upload"></div>
+    </form>
+  </div>
 </body>
 </html>

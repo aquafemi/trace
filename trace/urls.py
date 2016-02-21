@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import patterns, url
 from django.contrib import admin
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from myapp import views
 
 admin.autodiscover()
@@ -26,3 +27,5 @@ urlpatterns = [
     url(r'^trace-playback/', views.TracePlayback.as_view()),
     url(r'^status/', views.Status.as_view())
 ]
+
+urlpatterns += staticfiles_urlpatterns()

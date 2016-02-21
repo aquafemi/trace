@@ -1,6 +1,8 @@
 from django.http import (HttpResponseBadRequest, HttpResponseRedirect,
                          HttpResponse)
 from django.shortcuts import redirect, render, render_to_response
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 from django.views.generic.base import View
 from myapp.models import *
 from myapp.forms import *
@@ -20,16 +22,19 @@ AUTH_SECRET = 'a9918408b27cc8eae418ee0d25019b429a13f3d0'
 class HomePage(View):
 
     def get(self, request):
-        # ask person if they want to create a trace or upload a trace
         return render(request, 'home.html')
 
 class AudioUpload(View):
 
-    def get(self, request):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(AudioUpload, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
         form = AudioFileForm()
         return render(request, 'audio_upload.html', {'form': form})
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         # put the image in the queue or have it replace the old one
 
         transloadit_json = request.POST.get('transloadit', False)
@@ -37,6 +42,7 @@ class AudioUpload(View):
 
             # audio output
             if transloadit_json.get('results').get('wav'):
+                print('audio')
                 # get the download link
                 new_audio_link = transloadit_json.get('results').get('wav')[0].get('url')
                 # download the wav file and write it to temp
@@ -71,6 +77,7 @@ class AudioUpload(View):
 
             # waveform output
             else:
+                print('waveform')
                 # get the image link from the transloadit post
                 img_link = transloadit_json.get('results').get('waveform')[0].get('url')
                 with urllib.request.urlopen(img_link) as response, open('temp', 'wb') as out_file:
