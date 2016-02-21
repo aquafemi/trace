@@ -24,9 +24,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '+4zicqdp7y!*#14z*xah#zid#!m*y903qnz(+7q0xzgp54$od6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'traced.herokuapp.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'traced.herokuapp.com',
+                '0.0.0.0']
 
 
 # Application definition
@@ -39,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'myapp',
-    'bootstrap3'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -96,7 +96,8 @@ WSGI_APPLICATION = 'trace.wsgi.application'
 DATABASES = {}
 DATABASES['default'] =  dj_database_url.config()
 DATABASES['default'].update({
-    'ENGINE': 'django.db.backends.postgresql_psycopg2'
+    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    'NAME': 'traced'
 })
 # DATABASES = {
 #     'default': {

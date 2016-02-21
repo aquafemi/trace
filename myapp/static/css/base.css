@@ -2,7 +2,7 @@ body {margin:0;padding:0;height:100%;}
 div.topdiv {clear:both;position:fixed;top:0;height:50%;width:100%;color:#000000;font-size:50px;text-align:center;}
 div.bottomdiv {clear:both;position:fixed;bottom:0;height:50%;width:100%;color:#000000;font-size:50px;text-align:center;}
 #grad {
-  background: #FF00FF; /* For browsers that do not support gradients */
+  background: purple; /* For browsers that do not support gradients */
   background: -webkit-linear-gradient(-90deg, purple, blue); /* For Safari 5.1 to 6.0 */
   background: -o-linear-gradient(-90deg, purple, blue); /* For Opera 11.1 to 12.0 */
   background: -moz-linear-gradient(-90deg, purple, blue); /* For Firefox 3.6 to 15 */
@@ -21,13 +21,13 @@ div.bottomdiv {clear:both;position:fixed;bottom:0;height:50%;width:100%;color:#0
     margin: 0px 10px 10px 0px;
     float: left;
     border-radius: 10px;
-    font-family: 'Helvetica', cursive;
+    font-family: 'Helvetica';
     font-size: 25px;
-    color: #FFF;
+    color: purple;
     text-decoration: none;
-    background-color: #3498DB;
+    background-color: #f0f0f0;
     border-bottom: 5px solid #2980B9;
-    text-shadow: 0px -2px #2980B9;
+    text-shadow: 2px 0px blue;
     /* Animation */
     transition: all 0.1s;
     -webkit-transition: all 0.1s;
@@ -36,7 +36,8 @@ div.bottomdiv {clear:both;position:fixed;bottom:0;height:50%;width:100%;color:#0
 .button-0:hover,
 .button-0:focus {
     text-decoration: none;
-    color: #fff;
+    text-shadow: 2px 0px purple;
+    color: blue;
 }
 
 .button-0:active {

@@ -5,8 +5,7 @@ from django.db import models
 # Create your models here.
 
 class Trace(models.Model):
-    image = models.ImageField(upload_to='documents/%Y/%m/%d',
-                    width_field='width', height_field='height')
+    image = models.ImageField(upload_to='documents/%Y/%m/%d')
     width = models.IntegerField(default=1500)
     height = models.IntegerField(default=300)
 

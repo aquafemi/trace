@@ -1,12 +1,12 @@
-
+from django.core.files.images import get_image_dimensions
 from django.http import (HttpResponseBadRequest, HttpResponseRedirect,
                          HttpResponse)
 from django.shortcuts import redirect, render, render_to_response
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.views.generic.base import View
-from myapp.models import *
-from myapp.forms import *
+from myapp.models import AudioFile, Trace
+from myapp.forms import AudioFileForm, TraceForm
 from trace import settings as SETTINGS
 from transloadit.client import Client
 from requests import get
@@ -36,7 +36,7 @@ class AudioUpload(View):
 
     def get(self, request, *args, **kwargs):
         form = AudioFileForm()
-        return render(request, 'audio_upload.html', {'form': form, 'message':''})
+        return render(request, 'audio_upload.html', {'form': form, 'message':'Hi There.'})
 
     def post(self, request, *args, **kwargs):
         # put the image in the queue or have it replace the old one
@@ -131,23 +131,25 @@ class AudioUpload(View):
 
 class TracePlayback(View):
 
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(TracePlayback, self).dispatch(request, *args, **kwargs)
+
     def get(self, request):
-        return render(request, 'trace_playback.html', {'form': form, 'message':''})
+        form = TraceForm()
+        return render(request, 'trace_playback.html', {'form': form, 'message':'Hi There.'})
 
     def post(self, request):
         form = TraceForm(request.POST, request.FILES)
         if not form.is_valid():
             form = TraceForm()
-            return render(request, 'trace_playback.html', {'form': form})
+            message = "Please try again"
+            return render(request, 'trace_playback.html', {'form': form, 'message': message})
 
         image_file = request.FILES['image']
-        trace = Trace(image=image_file,width=image_file.width,
-            height=image_file.height)
+        width, height =  get_image_dimensions(image_file)
+        trace = Trace(image=image_file, width=width, height=height)
         trace.save()
-
-
-
-
 
         return HttpResponseRedirect('status.html')
 
