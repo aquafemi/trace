@@ -12,7 +12,7 @@ from requests import get
 import json
 import shutil
 import time
-import urllib
+import urllib.request
 
 AUTH_KEY = '90e7d490d78611e5893f9b7c82ab5693'
 AUTH_SECRET = 'a9918408b27cc8eae418ee0d25019b429a13f3d0'
