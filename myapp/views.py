@@ -163,6 +163,8 @@ class TracePlayback(View):
         trace = Trace(image=image_file, width=width, height=height)
         trace.save()
         message = 'Unraveling...'
+        im = numpy.array('4b098970d7ca11e5af1ccd391e451afe.png')
+        transform = numpy.fft.fft2(im)
         return render(request, 'status.html', {'message': message})
 
 class Status(View):
