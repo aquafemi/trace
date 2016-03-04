@@ -2,11 +2,12 @@
 Physical music generation and playback
 
 * Write music onto a surface
-  * Physical markings on a paper that can be zoomed into: [transloadit api](https://transloadit.com/demos/audio-encoding/generate-a-waveform-image-from-an-audio-file)
+  * ~~Physical markings on a paper that can be zoomed into: [transloadit api](https://transloadit.com/demos/audio-encoding/generate-a-waveform-image-from-an-audio-file)~~
+  * Need to come up with a new physical image format
   * First test to see if music can actually read this way
 * Read music using a camera that does automatic playback of what it's seeing
-  * Ad hoc mode
-  * Continuous mode -> there should be an indicator on the screen (that moves from left to right) indicating at what point in time the current music is playing.
+  * Ad hoc mode. Take a picture of something and see if it can be played back
+  * Continuous mode -> there should be an indicator on the screen (that moves from left to right) indicating at what point in time the current music is playing. Tries to "read" from left to right.
 * Can upload music or leave it as is
 * Can also play music that wil generate one of the format (call it a "Trace") -> Connect it to a raspberry pi
 * Can play multiple traces at the same time as long as they are demarcated ("trace") -> a straight enough line can become a demarcation
